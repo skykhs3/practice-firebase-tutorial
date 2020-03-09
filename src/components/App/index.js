@@ -12,10 +12,13 @@ import HomePage from '../Home';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
 import * as ROUTES from '../../constants/routes';
+const test=process.env.apiKey;
 const App = () => (
   <Router>
     <div>
       <Navigation />
+      <p>{test}</p>
+      <hr />
       <hr />
       <Route exact path={ROUTES.LANDING} component={LandingPage} />
       <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
