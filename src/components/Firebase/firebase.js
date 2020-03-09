@@ -20,9 +20,9 @@ const firebaseConfig = {
   appId: "1:30317301704:web:45d061c7e02278fdf63afd",
   measurementId: "G-HRL0X3LR43"
 };
-
   class Firebase {
     constructor() {
+      console.log(firebaseConfig.apiKey);
       app.initializeApp(firebaseConfig);
     }
   }
