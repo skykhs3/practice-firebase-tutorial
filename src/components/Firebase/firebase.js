@@ -1,15 +1,5 @@
 import app from 'firebase/app';
-
-// const firebaseConfig = {
-//     apiKey: process.env.apiKey,
-//     authDomain: process.env.authDomain,
-//     databaseURL: process.env.databaseURL,
-//     projectId: process.env.projectId,
-//     storageBucket: process.env.storageBucket,
-//     messagingSenderId: process.env.messagingSenderId,
-//     appId: process.env.appId,
-//     measurementId: process.env.messagingSenderId
-//   };
+import 'firebase/auth'
 const firebaseConfig = {
   apiKey: "AIzaSyB2U5HcUXfL0Rg891lDHFthV29XzzSIfxw",
   authDomain: "hyeonsu1984.firebaseapp.com",
@@ -20,10 +10,19 @@ const firebaseConfig = {
   appId: "1:30317301704:web:45d061c7e02278fdf63afd",
   measurementId: "G-HRL0X3LR43"
 };
-  class Firebase {
-    constructor() {
-      console.log(firebaseConfig.apiKey);
-      app.initializeApp(firebaseConfig);
-    }
+class Firebase {
+  constructor() {
+    console.log(firebaseConfig.apiKey);
+    app.initializeApp(firebaseConfig);
+    this.auth = app.auth();
+    doCreateUserWithEmailAndPassword = (email, password) =>
+      this.auth.createUserWithEmailAndPassword(email, password);
+    doSignInWithEmailAndPassword = (email, password) =>
+      this.auth.signInWithEmailAndPassword(email, password);
+    doSignOut = () => this.auth.signOut();
+    doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
+    doPasswordUpdate = password =>
+      this.auth.currentUser.updatePassword(password);
   }
-  export default Firebase;
+}
+export default Firebase;
