@@ -3,13 +3,29 @@ import { Link } from 'react-router-dom';
 import SignOutButton from '../SignOut';
 import * as ROUTES from '../../constants/routes';
 import {AuthUserContext} from '../Session' ;
-const Navigation = () => (
+class Navigation extends React.Component{
+  componentDidMount() {
+    console.log('before');
+  }
+  componentWillUnmount() {
+    console.log('after'); 
+  }
+  componentWillUpdate(){
+    console.log('네비게이션 바뀔 예정');
+  }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log('네비게이션 바뀜');
+  }
+  render(){
+    return(
    <AuthUserContext.Consumer>
       {authUser =>
         authUser ? <NavigationAuth /> : <NavigationNonAuth />
       }
     </AuthUserContext.Consumer>
-);
+    );
+  }
+}
 const NavigationAuth = () => (
   <ul>
     <li>
