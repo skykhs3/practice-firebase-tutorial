@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { AuthUserContext, withAuthorization } from '../Session';
+import { withFirebase } from '../Firebase';
 class AdminPage extends Component {
   constructor(props) {
     super(props);
@@ -11,20 +12,24 @@ class AdminPage extends Component {
   componentDidMount() {
     console.log('AdminPage did mount');
     this.setState({ loading: true });
-    this.props.firebase.users().on("value", snapshot => {
-      console.log(snapshot.val());
-      console.log('user');
-      const usersObject = snapshot.val();
-      const usersList = Object.keys(usersObject).map(key => ({
-        ...usersObject[key],
-        uid: key,
-      }));
-      this.setState({
-        users: usersList,
-        loading: false,
-      });
+
+
+//     var ref = this.props.firebase.db.ref("user/XW4LpKHZY3bWyVaS4VHpr0qxJaj2");
+// ref.on('value', function(snapshot) {
+//   console.log(snapshot.val().username);
+
+// }, function (errorObject) {
+//   console.log("The read failed: " + errorObject.code);
+// });
+  this.props.firebase.users().on('value', snapshot => {
+    console.log('hmm');
+    this.setState({
+      users: snapshot.val(),
+      loading: false,
     });
-  }
+  });
+ console.log( 'hmm2' );
+}
   componentWillUnmount() {
     console.log('AdminPage will unmount');
     this.props.firebase.users().off();
@@ -58,4 +63,4 @@ const UserList = ({ users }) => (
   </ul>
 );
 const condition = authUser => !!authUser;
-export default withAuthorization(condition)(AdminPage); 
+export default withFirebase(AdminPage);
