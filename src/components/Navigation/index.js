@@ -4,17 +4,11 @@ import SignOutButton from '../SignOut';
 import * as ROUTES from '../../constants/routes';
 import {AuthUserContext} from '../Session' ;
 class Navigation extends React.Component{
-  componentDidMount() {
-    console.log('before');
-  }
-  componentWillUnmount() {
-    console.log('after'); 
-  }
-  componentWillUpdate(){
-    console.log('네비게이션 바뀔 예정');
-  }
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log('네비게이션 바뀜');
+  constructor(props) {
+    super(props);
+    this.state={
+      loading:true
+    }
   }
   render(){
     return(

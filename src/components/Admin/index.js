@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { AuthUserContext, withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
+
 class AdminPage extends Component {
   constructor(props) {
     super(props);
@@ -11,25 +12,30 @@ class AdminPage extends Component {
   }
   componentDidMount() {
     console.log('AdminPage did mount');
+
     this.setState({ loading: true });
-
-
-//     var ref = this.props.firebase.db.ref("user/XW4LpKHZY3bWyVaS4VHpr0qxJaj2");
-// ref.on('value', function(snapshot) {
-//   console.log(snapshot.val().username);
-
-// }, function (errorObject) {
-//   console.log("The read failed: " + errorObject.code);
-// });
-  this.props.firebase.users().on('value', snapshot => {
-    console.log('hmm');
-    this.setState({
-      users: snapshot.val(),
-      loading: false,
+    this.props.firebase.users().on('value', snapshot => {
+      const usersObject = snapshot.val();
+      if (usersObject == null) {
+        const usersList = [];
+        this.setState({
+          users: usersList,
+          loading: false,
+        });
+      }
+      else {
+        const usersList = Object.keys(usersObject).map(key => ({
+          ...usersObject[key],
+          uid: key,
+        }));
+        this.setState({
+          users: usersList,
+          loading: false,
+        });
+      }
+      
     });
-  });
- console.log( 'hmm2' );
-}
+  }
   componentWillUnmount() {
     console.log('AdminPage will unmount');
     this.props.firebase.users().off();
@@ -45,22 +51,28 @@ class AdminPage extends Component {
     );
   }
 }
-const UserList = ({ users }) => (
-  <ul>
-    {users.map(user => (
-      <li key={user.uid}>
-        <span>
-          <strong>ID:</strong> {user.uid}
-        </span>
-        <span>
-          <strong>E-Mail:</strong> {user.email}
-        </span>
-        <span>
-          <strong>Username:</strong> {user.username}
-        </span>
-      </li>
-    ))}
-  </ul>
-);
+const UserList = ({ users }) => {
+  if (users == null)
+    return (<div>df</div>);
+  else {
+    return (
+      <ul>
+        {users.map(user => (
+          <li key={user.uid}>
+            <p>
+              <strong>Username:</strong> {user.username}
+            </p>
+            <p>
+              <strong>E-Mail:</strong> {user.email}
+            </p>
+            <p>
+              <strong> ID:</strong> {user.uid}
+            </p>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+}
 const condition = authUser => !!authUser;
-export default withFirebase(AdminPage);
+export default withAuthorization(condition)(AdminPage); 

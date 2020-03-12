@@ -13,10 +13,11 @@ const firebaseConfig = {
 };
 class Firebase {
   constructor() {
-    console.log(firebaseConfig.apiKey);
+    //console.log(firebaseConfig.apiKey);
     app.initializeApp(firebaseConfig);
     this.auth = app.auth();
     this.db = app.database();
+    
   }
   doCreateUserWithEmailAndPassword = (email, password) =>
     this.auth.createUserWithEmailAndPassword(email, password);
